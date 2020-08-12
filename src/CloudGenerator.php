@@ -35,42 +35,30 @@ class CloudGenerator
     /**
      * @test
      */
-    public function extractNamesFromCodeBase($codeBaseDirectorypath)
+    public function generateWordingScoresFrom(string $codeBaseDirectoryPath)
     {
-        $directory = new \RecursiveDirectoryIterator($codeBaseDirectorypath);
-        $iterator = new \RecursiveIteratorIterator($directory);
-        $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
-        $sourceFiles = [];
-        foreach ($regex as $file) {
-            $sourceFiles[] = $file[0];
-        }
-        $names = [];
-        foreach ($sourceFiles as $filePath) {
+        $words = [];
+        foreach ($this->getCodeBaseFiles($codeBaseDirectoryPath) as $filePath) {
             $sourceCode = file_get_contents($filePath);
-            $names = array_merge(
-                $names,
+            $words = array_merge(
+                $words,
                 $this->extractNamingFromNameSpaces($sourceCode),
                 $this->extractNaming($sourceCode)
             );
         }
 
-        $scoreNames = [];
-        foreach ($names as $name) {
-            isset($scoreNames[$name])
-                ? $scoreNames[$name]++
-                : $scoreNames[$name] = 1;
+        $wordingScores = [];
+        foreach ($words as $word) {
+            isset($wordingScores[$word])
+                ? $wordingScores[$word]++
+                : $wordingScores[$word] = 1;
         }
 
 
-        return $scoreNames;
+        return $wordingScores;
     }
 
-    /**
-     * @param $content
-     * @param $namespaces
-     * @return array
-     */
-    private function extractNamingFromNameSpaces($content)
+    private function extractNamingFromNameSpaces(string $content):array
     {
         $namespaces = [];
         preg_match_all('/namespace\s+(.+);/', $content, $namespaces);
@@ -82,20 +70,28 @@ class CloudGenerator
         return $domain;
     }
 
-    /**
-     * @param $content
-     * @param array $matchs
-     * @param array $names
-     * @return array
-     */
-    private function extractNaming($content)
+    private function extractNaming(string $content):array
     {
-        $matchs = [];
+        $match = [];
         $names = [];
         foreach (self::EXTRACT_NAMING_REGEX as $regex) {
-            preg_match_all($regex, $content, $matchs);
-            $names = array_merge($names, $matchs[1]);
+            preg_match_all($regex, $content, $match);
+            $names = array_merge($names, $match[1]);
         }
         return $names;
+    }
+
+    private function getCodeBaseFiles(string $codeBaseDirectoryPath):array
+    {
+        $directory = new \RecursiveDirectoryIterator($codeBaseDirectoryPath);
+        $iterator = new \RecursiveIteratorIterator($directory);
+        $files = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
+        $sourceFiles = [];
+
+        foreach ($files as $file) {
+            $sourceFiles[] = $file[0];
+        }
+
+        return $sourceFiles;
     }
 }
