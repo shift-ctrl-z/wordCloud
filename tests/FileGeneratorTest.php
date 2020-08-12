@@ -15,7 +15,7 @@ class FileGeneratorTest extends TestCase
     public function exportWordsToTextFile(): void
     {
         $fileGenerator = new FileGenerator();
-        $fileGenerator->exportWords(['word2', 'word1'], self::TEST_FILE_EXPORT_PATH);
+        $fileGenerator->generateWordsFile(['word2', 'word1'], self::TEST_FILE_EXPORT_PATH);
         $this->assertFileEquals(self::TEST_FILE_EXPORT_PATH, __DIR__ . '/Dataset/expected-test-codebase-words-export.txt');
     }
 
