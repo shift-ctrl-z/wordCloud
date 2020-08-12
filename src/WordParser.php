@@ -2,7 +2,7 @@
 
 namespace WordCloud;
 
-class CloudGenerator
+class WordParser
 {
     const VARIABLE_NAME = '/\$(?!.*this)(\w+)/';
     const CLASS_NAME = '/class\s+(\w+)/';
@@ -37,7 +37,7 @@ class CloudGenerator
     /**
      * @test
      */
-    public function generateWordingScoresFrom(string $codeBaseDirectoryPath)
+    public function extractWordsFrom(string $codeBaseDirectoryPath)
     {
         $words = [];
         foreach ($this->getCodeBaseFiles($codeBaseDirectoryPath) as $filePath) {
@@ -49,15 +49,7 @@ class CloudGenerator
             );
         }
 
-        $wordingScores = [];
-        foreach ($words as $word) {
-            isset($wordingScores[$word])
-                ? $wordingScores[$word]++
-                : $wordingScores[$word] = 1;
-        }
-
-
-        return $wordingScores;
+        return array_values($words);
     }
 
     private function extractNamingFromNameSpaces(string $content):array
