@@ -12,7 +12,7 @@ class FileGeneratorTest extends TestCase
     /**
      * @test
      */
-    public function exportWordsInTextFile(): void
+    public function exportWordsToTextFile(): void
     {
         $fileGenerator = new FileGenerator();
         $fileGenerator->exportWords(['word2', 'word1'], self::TEST_FILE_EXPORT_PATH);
