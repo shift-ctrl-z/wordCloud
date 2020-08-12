@@ -7,12 +7,20 @@ use WordCloud\FileGenerator;
 
 class FileGeneratorTest extends TestCase
 {
+    const TEST_FILE_EXPORT_PATH = __DIR__ . '/test-codebase-words-export.txt';
+
     /**
      * @test
      */
-    public function displayWords(){
+    public function displayWords(): void
+    {
         $fileGenerator = new FileGenerator();
-        $fileGenerator->exportWords(['word2','word1'],__DIR__.'test-codebase-words-export.txt');
-        $this->assertFileEquals(__DIR__.'test-codebase-words-export.txt',__DIR__.'/Dataset/expected-test-codebase-words-export.txt');
+        $fileGenerator->exportWords(['word2', 'word1'], self::TEST_FILE_EXPORT_PATH);
+        $this->assertFileEquals(self::TEST_FILE_EXPORT_PATH, __DIR__ . '/Dataset/expected-test-codebase-words-export.txt');
+    }
+
+    protected function tearDown(): void
+    {
+        unlink(self::TEST_FILE_EXPORT_PATH);
     }
 }
