@@ -37,7 +37,7 @@ class WordParserTest extends TestCase
     /**
      * @test
      */
-    public function generateNameScoreFromDirectory()
+    public function extractWords()
     {
         $generator = new WordParser();
         $nameScores = $generator->extractWordsFrom(__DIR__ . '/Dataset');
