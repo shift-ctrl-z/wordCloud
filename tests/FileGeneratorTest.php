@@ -21,6 +21,8 @@ class FileGeneratorTest extends TestCase
 
     protected function tearDown(): void
     {
-        unlink(self::TEST_FILE_EXPORT_PATH);
+        if(file_exists(self::TEST_FILE_EXPORT_PATH)){
+            unlink(self::TEST_FILE_EXPORT_PATH);
+        }
     }
 }
