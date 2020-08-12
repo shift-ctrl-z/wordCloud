@@ -6,6 +6,7 @@ class CloudGenerator
 {
     const VARIABLE_NAME = '/\$(?!.*this)(\w+)/';
     const CLASS_NAME = '/class\s+(\w+)/';
+    const CLASS_INSTANCE_NAME = '/new\s+(\w+)\(.*\)\;/';
     const CONST_NAME = '/const\s+(\w+)/';
     const INTERFACE_NAME = '/interface\s+(\w+)/';
     const TRAIT_NAME = '/trait\s+(\w+)/';
@@ -20,6 +21,7 @@ class CloudGenerator
     const EXTRACT_NAMING_REGEX = [
         self::VARIABLE_NAME,
         self::CLASS_NAME,
+        self::CLASS_INSTANCE_NAME,
         self::INTERFACE_NAME,
         self::TRAIT_NAME,
         self::METHOD_NAME,
